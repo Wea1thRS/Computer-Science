@@ -1,0 +1,6 @@
+Two notes and a rest, for testing
+Otto Borchert
+3
+.5 C 5 NATURAL false
+1 R false
+.5 C 5 NATURAL false

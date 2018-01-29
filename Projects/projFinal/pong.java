@@ -1,0 +1,308 @@
+import acm.graphics.*;
+import acm.program.GraphicsProgram;
+import java.awt.*;
+import java.io.File;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import acm.util.SoundClip;
+//import jaco.mp3.player.MP3Player;
+
+public class pong extends GraphicsProgram {
+  private static final long serialVersionUID = 100L;
+  public static final int APPLICATION_WIDTH = 1000, APPLICATION_HEIGHT = 700;
+  int MV_AMT = 2, MV_AM = 2;
+  //MP3Player Player = new MP3Player();
+  SoundClip Plop, Boom;
+  double ballYJumpInt = 1;
+  final int WAIT = 5, DIAM = 15;
+  double time, ballXJump, ballYJump, yMove, xMove, uMove, dMove, ballXJumpInt = 1;
+  int score, score1, counter, counter2;
+  boolean reStart, yolo, auto, answered;
+  GLabel score2, score3, win, win2;
+  GRect paddle, paddle2, box, box2, box3, box4;
+  GImage pong;
+  pongball ball, ball2;
+  friendbox friend;
+  cpubox cpubox;
+  GLabel sign1 = new GLabel("Do you wish to play against the computer or a friend?");
+  GLabel sign2 = new GLabel("-- Click on box to start --");
+  GLabel controls = new GLabel("Left Paddle Controls: ");
+  GLabel controls1 = new GLabel("W: Left Paddle Up \\ S: Left Paddle Down");
+  GLabel controls2 = new GLabel("Right Paddle Controls: ");
+  GLabel controls3 = new GLabel("Up Arrow: Right Paddle Up \\ Down Arrow: Right Paddle Down");
+  
+  public void init() {
+    yolo = true;
+    answered = false;
+    auto = false;
+    cpubox = new cpubox();
+    friend = new friendbox();
+    ball = new pongball();
+    ball2 = new pongball();
+    //add(ball);
+    //Player.add(new File("Draconus.mp3"));
+    //Player.add(new File("8bit.mp3"));
+    //Player.add(new File("Arcade.mp3"));
+    Plop = new SoundClip("Plop.wav");
+    Boom = new SoundClip("Boom.wav");
+    //Player.setVolume(40);
+    //if(Player.isPlaying())
+    //  ;
+    //else {
+    //  Player.play();
+    //}
+    Plop.setVolume(1);
+    Boom.setVolume(1);
+    ball.sendToFront();
+    counter = 0;
+    score = 0;
+    uMove = dMove = 0;
+    xMove = yMove = 0;
+    time = 0;
+    ballXJump = 1;
+    reStart = false;
+    ballYJump = 1;
+    setBackground(Color.BLACK);
+    addKeyListeners();
+    addMouseListeners();
+    displayInstructions();
+    pong = new GImage("pong.png", 95, 200);
+    add(pong);
+    box = new GRect(990, -10, 10, 10);
+    box.setColor(Color.RED);
+    box.setFilled(true);
+    add(box);
+    box2 = new GRect(990, 690, 10, 10);
+    box2.setColor(Color.RED);
+    box2.setFilled(true);
+    add(box2);
+    box3 = new GRect(0, -10, 10, 10);
+    box4 = new GRect(0, 690, 10, 10);
+    box3.setColor(Color.RED);
+    box4.setColor(Color.RED);
+    box3.setFilled(true);
+    box4.setFilled(true);
+    add(box3);
+    add(box4);
+    win = new GLabel("Player Two Wins!!!!!");
+    win.setFont("*-BOLDITALIC-30");
+    win.setColor(Color.YELLOW);
+    add(win, 320, 200);
+    win.setVisible(false);
+    win2 = new GLabel("Player One Wins!!!!!");
+    win2.setFont("*-BOLDITALIC-30");
+    win2.setColor(Color.YELLOW);
+    add(win2, 320, 200);
+    win2.setVisible(false);
+    GLabel hi = new GLabel("");
+    hi.setFont("Serif-BOLD-24");
+    hi.setColor(Color.GREEN);
+    add(hi, 450, 350);
+    paddle = new GRect(1, 300, 5, 75);
+    paddle.setColor(Color.MAGENTA);
+    paddle.setFilled(true);
+    add(paddle);
+    paddle2 = new GRect(993, 300, 5, 75);
+    paddle2.setColor(Color.MAGENTA);
+    paddle2.setFilled(true);
+    add(paddle2);
+    xMove = yMove = 0;
+    uMove = dMove = 0;
+    score3 = new GLabel("Player Two Score: " + score1);
+    score3.setColor(Color.RED);
+    add(score3, 875, 12);
+    score2 = new GLabel("Player One Score: " + score);
+    score2.setColor(Color.RED);
+    add(score2, 10, 10);
+    setTitle("`!~_~!`Pong`!~_~!`");
+    ball.sendToFront();
+  }// Init
+  
+  public void keyPressed(KeyEvent e) {
+    int key = e.getKeyCode();
+    if (key == KeyEvent.VK_W)
+      yMove = -MV_AMT;
+    else if (key == KeyEvent.VK_S)
+      yMove = MV_AMT;
+    else if (key == KeyEvent.VK_UP)
+      dMove = -MV_AM;
+    else if (key == KeyEvent.VK_DOWN)
+      dMove = MV_AM;
+  } //keyPressed
+  
+  public void mousePressed(MouseEvent e) {
+    double x = e.getX();
+    double y = e.getY();
+    GObject theObject = getElementAt(x, y);
+    if (theObject == friend) {
+      pause(1);
+      answered = true;
+    } else if (theObject == cpubox) {
+      auto = true;
+      answered = true;
+    }
+  } //mousePressed
+  
+  public void run() {
+    while (yolo) //game loop
+    {
+      if (auto)
+        paddle2.setLocation(993, ball.getY());
+      GRectangle paddleBox = paddle.getBounds();
+      GRectangle ballBox = ball.getBounds();
+      GRectangle paddle2Box = paddle2.getBounds();
+      pause(WAIT);
+      paddle.move(0, yMove);
+      paddle2.move(0, dMove);
+//      xMove = yMove = 0;
+//      uMove = dMove = 0;
+      if(pong.getWidth()+pong.getX()<=1600)
+        pong.move(1,0);
+      else
+        pong.setLocation(-500,pong.getY());
+      counter += 50;
+      if(counter%5000 == 0)
+      {
+        if(ball.glow.isVisible())
+          ball.glow.setVisible(false);
+        else
+          ball.glow.setVisible(true);
+      }
+      if(counter%15000 == 0)
+      {
+        ballXJumpInt *= 1.20;
+         ballYJumpInt *= 1.20;
+        if(ball.inside.isVisible())
+          ball.inside.setVisible(false);
+        else
+          ball.inside.setVisible(true);
+      }
+      if(counter%10000 == 0)
+      {
+        if(ball.outside.isVisible())
+          ball.outside.setVisible(false);
+        else
+          ball.outside.setVisible(true);
+      }
+      time = time + WAIT;
+      if (ball.getY() <= 0) //at top of window?
+        ballYJump = ballYJumpInt;
+      else if (ball.getY() + DIAM >= APPLICATION_HEIGHT - 23) //at bottom?
+        ballYJump = -ballYJumpInt;
+      else if (paddleBox.intersects(ballBox)) //at left
+      {
+        Plop.play();
+        ballXJump *= 1.2;
+        ballYJump *= 1.2;
+        ballXJump = ballXJumpInt;
+      } else if (paddle2Box.intersects(ballBox)) //at right?
+      {
+        Plop.play();
+        ballXJump = -ballXJumpInt;
+        ballXJump *= 1.2;
+        ballYJump *= 1.2;
+      }
+      ball.move(ballXJump, ballYJump);
+      if (ball.getX() < 0) {
+        Boom.play();
+        ball.setLocation(APPLICATION_WIDTH / 2, APPLICATION_HEIGHT / 2);
+        score++;
+        pause(250);
+      } else if (ball.getX() > 994) {
+        Boom.play();
+        ball.setLocation(APPLICATION_WIDTH / 2, APPLICATION_HEIGHT / 2);
+        score1++;
+        pause(250);
+      }
+      if (paddle2.getY() >= 615) {
+        uMove = 0;
+        dMove = 0;
+      }
+      if (paddle2.getY() <= 0) {
+        uMove = 0;
+        dMove = 0;
+      }
+      if (paddle.getY() >= 615) {
+        xMove = 0;
+        yMove = 0;
+      }
+      if (paddle.getY() <= 0) {
+        xMove = 0;
+        yMove = 0;
+      }
+      
+      if (score == 5) {
+        score3.setLabel("Player Two Score: " + score);
+        win.setLabel("Player Two Wins!!!!!");
+        win.setVisible(true);
+        pause(2000);
+        win.setLabel("Click To Play Again!");
+        waitForClick();
+        removeAll();
+        score = 0;
+        score1 = 0;
+        ballXJumpInt *= 1.5;
+        ballYJumpInt *= 1.5;
+        init();
+      }
+      if (score1 == 5) {
+        score2.setLabel("Player One Score: " + score1);
+        win2.setLabel("Player One Wins!!!!!");
+        win2.setVisible(true);
+        pause(2000);
+        win2.setLabel("Click To Play Again");
+        waitForClick();
+        removeAll();
+        score = 0;
+        score1 = 0;
+        ballXJumpInt *= 1.5;
+        ballYJumpInt *= 1.5;
+        init();
+      }
+      score3.setLabel("Player Two Score: " + score);
+      score2.setLabel("Player One Score: " + score1);
+    } //game loop
+  }// run
+  public void displayInstructions() {
+    while(!answered) {
+      ball2.sendToBack();
+      add(ball2);
+      pause(5);
+      if(ball2.getY() <= 0) //at top of window?
+        ballYJump = ballYJumpInt;
+      else if(ball2.getY() + DIAM >= APPLICATION_HEIGHT - 23) //at bottom?
+        ballYJump = -ballYJumpInt;
+      else if(ball2.getX()<=0) //at left
+        ballXJump = ballXJumpInt;
+      else if(ball2.getX()>=1000) //at right?
+        ballXJump = -ballXJumpInt;
+      ball2.move(ballXJump, ballYJump);
+      sign1.setFont("*-BOLD-20");
+      sign2.setFont("*-BOLDITALIC-20");
+      sign1.setColor(Color.YELLOW);
+      sign2.setColor(Color.YELLOW);
+      add(controls,25,600);
+      add(controls1,25,650);
+      add(controls2,850,600);
+      add(controls3,647 ,650);
+      controls.setColor(Color.YELLOW);
+      controls1.setColor(Color.YELLOW);
+      controls2.setColor(Color.YELLOW);
+      controls3.setColor(Color.YELLOW);
+      add(sign1, 245, 200);
+      add(sign2, 325, 220);
+      add(friend, 300, 250);
+      add(cpubox, 500, 250);
+    }
+    remove(ball2);
+    add(ball);
+    remove(sign1);
+    remove(sign2);
+    remove(controls);
+    remove(controls1);
+    remove(controls2);
+    remove(controls3);
+    remove(friend);
+    remove(cpubox);
+  } // Instructions
+}// Pong

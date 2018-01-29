@@ -1,0 +1,5 @@
+A song with two repeating notes
+Otto Borchert
+2
+.5 C 1 NATURAL true
+.5 D 1 NATURAL true

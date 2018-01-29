@@ -1,0 +1,11 @@
+A musical scale in the higher octaves
+Marty Stepp
+8
+.5 C 9 NATURAL false
+.5 D 10 NATURAL false
+.5 E 9 NATURAL false
+.5 F 10 NATURAL false
+.5 G 9 NATURAL false
+.5 A 10 NATURAL false
+.5 B 9 NATURAL false
+.5 C 10 NATURAL false

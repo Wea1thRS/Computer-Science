@@ -1,0 +1,11 @@
+A musical scale in the lower octaves
+Marty Stepp
+8
+.5 C 2 NATURAL false
+.5 D 1 NATURAL false
+.5 E 2 NATURAL false
+.5 F 1 NATURAL false
+.5 G 2 NATURAL false
+.5 A 1 NATURAL false
+.5 B 2 NATURAL false
+.5 C 3 NATURAL false
