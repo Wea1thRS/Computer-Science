@@ -1,4 +1,4 @@
-package lab102;
+package lab103;
 
 import java.util.Random;
 
@@ -8,21 +8,21 @@ import java.util.Random;
  * @version Jan 27, 2018
  *
  */
-public class Scores implements Bag{
-    private int[] list;
+public class ArrayBag<E> implements Bag<E>{
+    private E[] list;
     private int count;
     
-    public Scores() {
+    public ArrayBag() {
         this.count = count;
-        this.list = new int[50];
+        this.list = (E[]) new Object[50];
     }
     /**
      * 
      * @param size the size of the list to be made.
      */
-    public Scores(int size) {
+    public ArrayBag(int size) {
         this.count = count;
-        this.list = new int[size];
+        this.list = (E[]) new Object[size];
     }
     /**
      * 
@@ -37,13 +37,13 @@ public class Scores implements Bag{
     @Override
     public boolean isEmpty() { return this.count == 0; }
     @Override
-    public void clear() { for(int i : this.list) { i = 0; } }
+    public void clear() { for(E e : this.list) { e = null; } }
     /**
      * 
      * @param num The number to be added to the list.
      */
     @Override
-    public void add(int num) {
+    public void add(E e) {
         if(count == this.list.length) {
            int[] temp = new int[this.list.length*2];
            for(int i = 0; i < this.list.length; i++) {
@@ -112,8 +112,8 @@ public class Scores implements Bag{
     
     @Override
     public boolean equals(Object object) {
-        if(this == object) { return true; } else if(!(object instanceof Scores)) { return false; }
-        Scores s = (Scores) object;
+        if(this == object) { return true; } else if(!(object instanceof ArrayBag)) { return false; }
+        ArrayBag s = (ArrayBag) object;
         for(int i = 0; i < this.list.length; i++) {
             if(this.list[i] != s.list[i]) { return false; }
         }

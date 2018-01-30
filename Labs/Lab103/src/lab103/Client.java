@@ -1,5 +1,5 @@
 
-package lab102;
+package lab103;
 
 import java.util.Random;
 
@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class Client {
     public static void main(String[] args) {
-        Scores scores = new Scores(100);
+        ArrayBag scores = new ArrayBag(100);
         Random rand = new Random();
         for(int i = 0; i < 100; i++) {
             scores.add(rand.nextInt(200)-100);
