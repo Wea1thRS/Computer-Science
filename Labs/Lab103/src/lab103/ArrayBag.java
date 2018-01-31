@@ -8,21 +8,21 @@ import java.util.Random;
  * @version Jan 27, 2018
  *
  */
-public class ArrayBag<E> implements Bag<E>{
+public class ArrayBag<E> implements Bag<E> {
     private E[] list;
     private int count;
     
     public ArrayBag() {
-        this.count = count;
         this.list = (E[]) new Object[50];
+        this.count = 0;
     }
     /**
      * 
      * @param size the size of the list to be made.
      */
     public ArrayBag(int size) {
-        this.count = count;
         this.list = (E[]) new Object[size];
+        this.count = 0;
     }
     /**
      * 
@@ -40,29 +40,29 @@ public class ArrayBag<E> implements Bag<E>{
     public void clear() { for(E e : this.list) { e = null; } }
     /**
      * 
-     * @param num The number to be added to the list.
+     * @param e The element to be added to the list.
      */
     @Override
     public void add(E e) {
         if(count == this.list.length) {
-           int[] temp = new int[this.list.length*2];
+           Object[] temp = (E[]) new Object[this.list.length*2];
            for(int i = 0; i < this.list.length; i++) {
                temp[i] = this.list[i];
            }
-           this.list = temp;
+           this.list = (E[]) temp;
             temp = null;
         }
-        this.list[count] = num;
+        this.list[count] = e;
         count++;
     }
     /**
      * 
-     * @param num the number to remove from the list.
+     * @param e the element to remove from the list.
      */
     @Override
-    public void remove(int num) {
+    public void remove(E e) {
         for(int i = 0; i < this.list.length; i++) {
-            if(this.list[i] == num) {
+            if(this.list[i] == e) {
                 for(int j = i; j < this.list.length; j++) {
                     this.list[i] = this.list[i+1];
                 }
@@ -81,26 +81,26 @@ public class ArrayBag<E> implements Bag<E>{
     }
     /**
      * 
-     * @param num the number you wish to find the frequency of.
+     * @param e the element you wish to find the frequency of.
      * @return returns how often the number given is found in the list.
      */
     @Override
-    public int getFrequencyOf(int num) {
+    public int getFrequencyOf(E e) {
         int freq = 0;
-        for(int i : this.list) {
-            if(i == num) { freq++; }
+        for(E el : this.list) {
+            if(el == e) { freq++; }
         }
         return freq;
     }
     /**
      * 
-     * @param num the number to test if the list contains it.
+     * @param e the element to test if the list contains it.
      * @return returns whether or not the number is found in the list.
      */
     @Override
-    public boolean contains(int num) {
-        for(int i : this.list) {
-            if(i == num) { return true; }
+    public boolean contains(E e) {
+        for(E el : this.list) {
+            if(el == e) { return true; }
         }
         return false;
     }
@@ -126,12 +126,12 @@ public class ArrayBag<E> implements Bag<E>{
     @Override
     public String toString() {
         String list = "{";
-        int[] temp = new int[this.count];
+        E[] temp = (E[]) new Object[this.count];
         for(int i = 0; i < this.count; i++) {
             temp[i] = this.list[i];
         }
-        for(int i : temp) {
-            list += i + ",";
+        for(E e : temp) {
+            list += e + ",";
         }
         list += "\b}";
         return getClass().getName() + "@" + this.count + ":" + list;
@@ -141,7 +141,7 @@ public class ArrayBag<E> implements Bag<E>{
      * @param index The index of the list of obtain the value of.
      * @return Returns the value of the index given.
      */
-    public int get(int index) {
+    public E get(int index) {
         if(index < 0 || index > count) {
             throw new ArrayIndexOutOfBoundsException();
         }

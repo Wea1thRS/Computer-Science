@@ -13,7 +13,8 @@ public class LinkedBag<T> implements Bag<T> {
         
     }
     public int getCurrentSize() {
-        
+        return this.list.size();
     }
+    
 
 }
