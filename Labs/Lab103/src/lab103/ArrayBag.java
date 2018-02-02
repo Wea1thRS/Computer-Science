@@ -61,12 +61,15 @@ public class ArrayBag<E> implements Bag<E> {
      */
     @Override
     public void remove(E e) {
-        for(int i = 0; i < this.list.length; i++) {
-            if(this.list[i] == e) {
-                for(int j = i; j < this.list.length; j++) {
+        for(int i = 0; i <= this.list.length; i++) {
+            if(this.list[i].equals(e)) {
+                for(int j = i; j <= this.list.length - 1; j++) {
                     this.list[i] = this.list[i+1];
                 }
+                this.list[this.list.length] = null;
+                break;
             }
+            break;
         }
         count--;
     }
@@ -74,9 +77,10 @@ public class ArrayBag<E> implements Bag<E> {
     @Override
     public void remove() {
         Random rand = new Random();
-        for(int i = rand.nextInt(this.count); i < this.list.length-1; i++) {
-            this.list[i] = this.list[i+1];
-        }
+        for(int i = rand.nextInt(this.count); i <= this.list.length - 1; i++) {
+                    this.list[i] = this.list[i+1];
+                }
+                this.list[this.list.length] = null;
         count--;
     }
     /**
