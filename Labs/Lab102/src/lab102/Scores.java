@@ -13,7 +13,7 @@ public class Scores implements Bag{
     private int count;
     
     public Scores() {
-        this.count = count;
+        this.count = 0;
         this.list = new int[50];
     }
     /**
@@ -21,7 +21,7 @@ public class Scores implements Bag{
      * @param size the size of the list to be made.
      */
     public Scores(int size) {
-        this.count = count;
+        this.count = 0;
         this.list = new int[size];
     }
     /**
@@ -125,16 +125,16 @@ public class Scores implements Bag{
      */
     @Override
     public String toString() {
-        String list = "{";
+        String string = "{";
         int[] temp = new int[this.count];
         for(int i = 0; i < this.count; i++) {
             temp[i] = this.list[i];
         }
         for(int i : temp) {
-            list += i + ",";
+            string += i + ",";
         }
-        list += "\b}";
-        return getClass().getName() + "@" + this.count + ":" + list;
+        string += "\b}";
+        return getClass().getName() + "@" + this.count + ":" + string;
     }
     /**
      * 

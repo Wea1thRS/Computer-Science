@@ -49,5 +49,6 @@ public interface Bag {
      * @param object the object to be compared.
      * @return returns whether or not the objects are the same.
      */
+    @Override
     public boolean equals(Object object);    
 }
